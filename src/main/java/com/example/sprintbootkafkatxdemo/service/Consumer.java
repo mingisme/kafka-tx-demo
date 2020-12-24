@@ -14,5 +14,13 @@ public class Consumer {
     @KafkaListener(topics = "users", groupId = "group_id")
     public void consume(String message) throws IOException {
         logger.info(String.format("#### -> Consumed message -> %s", message));
+        if(message.startsWith("foo")){
+            throw new RuntimeException("failed");
+        }
+    }
+
+    @KafkaListener(groupId = "dltGroup", topics = "users.DLT")
+    public void dltListen(String in) {
+        logger.info("Received from DLT: " + in);
     }
 }
