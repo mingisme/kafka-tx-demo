@@ -3,8 +3,11 @@ package com.example.sprintbootkafkatxdemo.controller;
 import com.example.sprintbootkafkatxdemo.service.Producer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Set;
 
 @RestController
 @RequestMapping(value = "/kafka")
@@ -28,8 +31,13 @@ public class KafkaController {
     @PostMapping(path = "/send/foos/{what}")
     public void sendFoo(@PathVariable String what) {
         this.kafkaTemplate.executeInTransaction(kafkaTemplate -> {
-            StringUtils.commaDelimitedListToSet(what).stream()
-                    .forEach(foo -> kafkaTemplate.send("topic2", foo));
+            Set<String> foos = StringUtils.commaDelimitedListToSet(what);
+            for(String foo : foos){
+                if(foo.equals("e")){
+                    throw new RuntimeException("fail");
+                }
+                kafkaTemplate.send("topic2", foo);
+            }
             return null;
         });
     }
