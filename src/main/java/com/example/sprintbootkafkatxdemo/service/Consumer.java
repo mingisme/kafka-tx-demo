@@ -44,4 +44,9 @@ public class Consumer {
     public void listen(String in) {
         logger.info("Received: " + in);
     }
+
+    @KafkaListener(topics = "user1", groupId = "group_id")
+    public void consumeUser(String user) throws IOException {
+        logger.info(String.format("#### -> Consumed user -> %s", user));
+    }
 }
