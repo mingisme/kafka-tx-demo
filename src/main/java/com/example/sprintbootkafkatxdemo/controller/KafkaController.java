@@ -3,7 +3,6 @@ package com.example.sprintbootkafkatxdemo.controller;
 import com.example.sprintbootkafkatxdemo.service.Producer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
